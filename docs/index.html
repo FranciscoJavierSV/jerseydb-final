@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JerseyDB | Tienda</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Bitter:wght@500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div class="shell">
+      <div class="topbar">
+        <a class="brandmark" href="/">JerseyDB</a>
+        <div class="topbar-actions">
+          <button type="button" id="open-customer-modal" class="ghost-link ghost-link-strong">Entrar</button>
+          <button type="button" id="open-admin-modal" class="ghost-link">Admin</button>
+        </div>
+      </div>
+
+      <header class="hero hero-shop">
+        <div>
+          <p class="eyebrow">Catalogo oficial</p>
+          <h1>Catalogo de jerseys.</h1>
+          <p class="lead">Explora el catalogo, elige la talla y agrega al carrito desde cada producto.</p>
+        </div>
+        <div class="hero-card">
+          <span class="hero-stat-label">Disponibilidad</span>
+          <strong>Stock por talla</strong>
+          <small>Compra directa desde el catalogo.</small>
+        </div>
+      </header>
+
+      <section id="customer-session-view" class="panel hidden">
+        <div class="panel-head">
+          <div>
+            <p class="eyebrow">Sesion</p>
+            <h2>Cuenta activa</h2>
+          </div>
+          <button type="button" id="customer-logout-button" class="dark-button">Cerrar sesion</button>
+        </div>
+        <div id="customer-session-card" class="card"></div>
+      </section>
+
+      <section class="storefront">
+        <section class="panel storefront-main">
+          <div class="panel-head">
+            <div>
+              <p class="eyebrow">Catalogo</p>
+              <h2>Productos disponibles</h2>
+            </div>
+            <form id="filter-form" class="inline-form">
+              <input type="text" name="team" placeholder="Filtrar por equipo" />
+              <button type="submit">Buscar</button>
+            </form>
+          </div>
+          <div id="catalog-grid" class="catalog-grid"></div>
+        </section>
+
+        <section class="panel storefront-cart">
+          <div class="panel-head">
+            <div>
+              <p class="eyebrow">Mi carrito</p>
+              <h2>Resumen</h2>
+            </div>
+          </div>
+          <div id="user-cart" class="stack"></div>
+        </section>
+      </section>
+    </div>
+
+    <div id="customer-modal" class="modal hidden">
+      <div class="modal-backdrop" data-close-customer-modal></div>
+      <div class="modal-card modal-card-wide">
+        <button type="button" class="modal-close" data-close-customer-modal aria-label="Cerrar">x</button>
+        <p class="eyebrow">Acceso cliente</p>
+        <h2>Entrar o crear cuenta</h2>
+        <div class="shop-grid">
+          <form class="form-card modal-form" id="login-form">
+            <h3>Entrar</h3>
+            <input name="correo" type="email" placeholder="Correo" required />
+            <input name="password" type="password" placeholder="Contrasena" required />
+            <button type="submit">Iniciar sesion</button>
+          </form>
+
+          <form class="form-card modal-form" id="customer-form">
+            <h3>Registrarse</h3>
+            <input name="id_cliente" placeholder="C03 opcional" />
+            <input name="nombre" placeholder="Nombre" required />
+            <input name="correo" type="email" placeholder="Correo" required />
+            <input name="password" type="password" placeholder="Contrasena" required />
+            <button type="submit">Crear perfil</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div id="admin-modal" class="modal hidden">
+      <div class="modal-backdrop" data-close-admin-modal></div>
+      <div class="modal-card">
+        <button type="button" class="modal-close" data-close-admin-modal aria-label="Cerrar">x</button>
+        <p class="eyebrow">Administrador</p>
+        <h2>Entrar al panel</h2>
+        <form id="admin-login-form" class="form-card modal-form">
+          <input name="password" type="password" placeholder="Contrasena" required />
+          <button type="submit">Entrar</button>
+        </form>
+      </div>
+    </div>
+
+    <script src="/app.js"></script>
+  </body>
+</html>

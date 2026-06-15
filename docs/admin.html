@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JerseyDB | Admin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Bitter:wght@500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div class="shell">
+      <div class="topbar">
+        <a class="brandmark" href="/">JerseyDB</a>
+      </div>
+      <div id="admin-app">
+        <header class="hero hero-admin">
+          <div>
+            <p class="eyebrow">Administracion</p>
+            <h1>Panel operativo</h1>
+            <p class="lead">Catalogo, inventario, clientes y control comercial.</p>
+          </div>
+          <div class="hero-card">
+            <span class="hero-stat-label">Backoffice</span>
+            <strong>Gestion centralizada</strong>
+            <small>Altas, bajas y consultas.</small>
+            <button type="button" id="logout-button" class="dark-button">Cerrar sesion</button>
+          </div>
+        </header>
+
+        <section class="stats" id="stats"></section>
+
+        <section class="panel">
+          <div class="panel-head">
+            <div>
+              <p class="eyebrow">Catalogo</p>
+              <h2>Vista general</h2>
+            </div>
+            <form id="filter-form" class="inline-form">
+              <input type="text" name="team" placeholder="Filtrar por equipo" />
+              <button type="submit">Buscar</button>
+            </form>
+          </div>
+          <div id="catalog-grid" class="catalog-grid"></div>
+        </section>
+
+        <section class="panel">
+          <div class="panel-head">
+            <div>
+              <p class="eyebrow">Operaciones</p>
+              <h2>Altas</h2>
+            </div>
+          </div>
+          <div class="forms-grid">
+            <form class="card form-card" id="catalog-form">
+              <h3>Nuevo catalogo</h3>
+              <input name="nombre" placeholder="Nombre" required />
+              <input name="temporada" placeholder="Temporada" required />
+              <input name="anio" type="number" placeholder="Anio" required />
+              <button type="submit">Guardar catalogo</button>
+            </form>
+
+            <form class="card form-card" id="jersey-form">
+              <h3>Nuevo jersey</h3>
+              <input name="id_jersey" placeholder="JRS-04" required />
+              <input name="equipo" placeholder="Equipo" required />
+              <select name="tipo" required>
+                <option value="Local">Local</option>
+                <option value="Visitante">Visitante</option>
+                <option value="Tercero">Tercero</option>
+              </select>
+              <select name="id_catalogo" id="jersey-catalog-select" required></select>
+              <label class="checkbox">
+                <input name="disponible" type="checkbox" checked />
+                Disponible
+              </label>
+              <button type="submit">Guardar jersey</button>
+            </form>
+
+            <form class="card form-card" id="variation-form">
+              <h3>Nueva variacion</h3>
+              <select name="id_jersey" id="variation-jersey-select" required></select>
+              <input name="color" placeholder="Color" required />
+              <input name="descripcion" placeholder="Descripcion" required />
+              <input name="imagen" placeholder="URL imagen" />
+              <input name="precio" type="number" step="0.01" placeholder="Precio" required />
+              <button type="submit">Guardar variacion</button>
+            </form>
+
+            <form class="card form-card" id="inventory-form">
+              <h3>Nuevo inventario</h3>
+              <select name="id_jersey" id="inventory-jersey-select" required></select>
+              <select name="id_variacion" id="inventory-variation-select" required></select>
+              <input name="talla" placeholder="Talla" required />
+              <input name="stock" type="number" placeholder="Stock" required />
+              <button type="submit">Guardar inventario</button>
+            </form>
+
+            <form class="card form-card" id="customer-form">
+              <h3>Alta de cliente</h3>
+              <input name="id_cliente" placeholder="C03 opcional" />
+              <input name="nombre" placeholder="Nombre" required />
+              <input name="correo" type="email" placeholder="Correo" required />
+              <input name="password" type="password" placeholder="Contrasena cliente" />
+              <input name="descuento" type="number" step="0.01" placeholder="Descuento %" />
+              <button type="submit">Crear cliente y carrito</button>
+            </form>
+          </div>
+        </section>
+
+        <section class="double-panel">
+          <section class="panel">
+            <div class="panel-head">
+              <div>
+                <p class="eyebrow">Clientes</p>
+                <h2>Actualizacion y baja</h2>
+              </div>
+            </div>
+            <div id="customers" class="stack"></div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-head">
+              <div>
+                <p class="eyebrow">Carritos</p>
+                <h2>Detalle activo</h2>
+              </div>
+            </div>
+            <div id="carts" class="stack"></div>
+          </section>
+        </section>
+
+        <section class="panel">
+          <div class="panel-head">
+            <div>
+              <p class="eyebrow">Consultas SQL</p>
+              <h2>Resultados de referencia</h2>
+            </div>
+          </div>
+          <div id="queries" class="queries-grid"></div>
+        </section>
+      </div>
+    </div>
+
+    <template id="customer-template">
+      <form class="card inline-editor customer-editor">
+        <input name="id_cliente" type="hidden" />
+        <input name="nombre" required />
+        <input name="correo" type="email" required />
+        <input name="password" type="password" placeholder="Nueva contrasena opcional" />
+        <input name="descuento" type="number" step="0.01" required />
+        <div class="editor-actions">
+          <button type="submit">Actualizar</button>
+          <button type="button" data-action="delete" class="danger">Eliminar</button>
+        </div>
+      </form>
+    </template>
+
+    <script src="/admin.js"></script>
+  </body>
+</html>
