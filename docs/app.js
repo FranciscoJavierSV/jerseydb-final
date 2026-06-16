@@ -58,8 +58,10 @@ function renderCatalog(catalog) {
   grid.innerHTML = catalog
     .map((jersey) => {
       const cover =
-        jersey.variaciones[0]?.imagen ||
-        "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=900&q=80";
+        jersey.variaciones[0]?.imagen
+        ? `images/${jersey.variaciones[0].imagen}`
+        : "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=900&q=80";
+
       return `
         <article class="card catalog-card">
           <div class="catalog-media">
