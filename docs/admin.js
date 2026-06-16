@@ -2,7 +2,7 @@ const state = {
   data: null,
 };
 
-const API_BASE = (window.FRONTEND_API_URL || "").replace(/\/$/, "");
+const API_BASE = "https://jerseydb-final-production.up.railway.app";
 
 async function request(url, options = {}) {
   const headers = { "Content-Type": "application/json", ...(options.headers || {}) };

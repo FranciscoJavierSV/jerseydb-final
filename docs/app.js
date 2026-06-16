@@ -13,7 +13,7 @@ async function request(url, options = {}) {
 
   // Use FRONTEND_API_URL from docs/.env (exposed as window.FRONTEND_API_URL)
   // If not present, fall back to relative URLs.
-  const API_BASE = (window.FRONTEND_API_URL || "").replace(/\/$/, "");
+  const API_BASE = "https://jerseydb-final-production.up.railway.app";
   const finalUrl = /^https?:\/\//i.test(url) ? url : (API_BASE ? `${API_BASE}${url}` : url);
 
   const response = await fetch(finalUrl, {
