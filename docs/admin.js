@@ -317,14 +317,14 @@ async function bootAdmin() {
   if (session.authenticated) {
     await load();
   } else {
-    window.location.href = "index.html?admin=1";
+    window.location.href = "index.html";
   }
 }
 
 document.getElementById("logout-button").addEventListener("click", async () => {
   await request("/api/admin/logout", { method: "POST" });
   localStorage.removeItem("jerseydb_admin_token");
-  window.location.href = "/?admin=1";
+  window.location.href = "index.html";
   showToast("Sesion cerrada.");
 });
 

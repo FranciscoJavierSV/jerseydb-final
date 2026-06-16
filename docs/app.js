@@ -11,6 +11,9 @@ async function request(url, options = {}) {
   const adminToken = localStorage.getItem("jerseydb_admin_token");
   if (adminToken) headers["x-admin-token"] = adminToken;
 
+  const customerToken = localStorage.getItem("jerseydb_customer_token");
+  if (customerToken) headers["x-customer-token"] = customerToken;
+
   // Use FRONTEND_API_URL from docs/.env (exposed as window.FRONTEND_API_URL)
   // If not present, fall back to relative URLs.
   const API_BASE = "https://jerseydb-final-production.up.railway.app";
@@ -306,6 +309,7 @@ function bindForms() {
       body: JSON.stringify(payload),
     });
     setClientCookie("customer_token", result.token);
+    localStorage.setItem("jerseydb_customer_token", result.token);
     form.reset();
     closeCustomerModal();
     await loadBootstrap();
@@ -322,6 +326,7 @@ function bindForms() {
       body: JSON.stringify(payload),
     });
     setClientCookie("customer_token", result.token);
+    localStorage.setItem("jerseydb_customer_token", result.token);
     form.reset();
     closeCustomerModal();
     await loadBootstrap();
@@ -334,6 +339,7 @@ function bindForms() {
     state.customer = null;
     renderSession(null);
     renderCart(null);
+    localStorage.removeItem("jerseydb_customer_token"); 
     await loadBootstrap();
     showToast("Sesion cerrada.");
   });
