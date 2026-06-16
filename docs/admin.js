@@ -317,7 +317,7 @@ async function bootAdmin() {
   if (session.authenticated) {
     await load();
   } else {
-    window.location.href = "/?admin=1";
+    window.location.href = "index.html?admin=1";
   }
 }
 

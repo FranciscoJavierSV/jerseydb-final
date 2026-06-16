@@ -284,7 +284,7 @@ function handleAdminQueryFlag() {
   const params = new URLSearchParams(window.location.search);
   if (params.get("admin") === "1") {
     openAdminModal();
-    window.history.replaceState({}, "", "/");
+    window.history.replaceState({}, "", "index.html");
   }
 }
 
@@ -338,28 +338,29 @@ function bindForms() {
     showToast("Sesion cerrada.");
   });
 
-  document.getElementById("admin-login-form").addEventListener("submit", async (event) => {
-    event.preventDefault();
-    try {
-      const form = event.currentTarget;
-      const payload = formToObject(form);
-      const result = await request("/api/admin/login", {
-        method: "POST",
-        body: JSON.stringify(payload),
-      });
-      setClientCookie("admin_token", result.token);
-      localStorage.setItem("jerseydb_admin_token", result.token);
-      const session = await request("/api/admin/session");
-      if (!session.authenticated) {
-        throw new Error("La sesion de admin no se pudo establecer.");
-      }
-      form.reset();
-      closeAdminModal();
-      window.location.href = "/admin";
-    } catch (error) {
-      showToast(error.message);
+document.getElementById("admin-login-form").addEventListener("submit", async (event) => {
+  event.preventDefault();
+  try {
+    const form = event.currentTarget;
+    const payload = formToObject(form);
+    const result = await request("/api/admin/login", {
+      method: "POST",
+      body: JSON.stringify(payload),
+    });
+    setClientCookie("admin_token", result.token);
+    localStorage.setItem("jerseydb_admin_token", result.token);
+    const session = await request("/api/admin/session");
+    if (!session.authenticated) {
+      throw new Error("La sesion de admin no se pudo establecer.");
     }
-  });
+    form.reset();
+    closeAdminModal();
+    window.location.href = "admin.html";
+  } catch (error) {
+    showToast(error.message);
+  }
+}
+);
 
   document.getElementById("open-customer-modal").addEventListener("click", openCustomerModal);
   document.getElementById("open-admin-modal").addEventListener("click", openAdminModal);
