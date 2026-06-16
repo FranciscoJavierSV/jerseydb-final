@@ -3,4 +3,5 @@
 backend/node_modules
 backend/db
 backend/.env
-docs/.env
+docs/.env/backend/.env
+/docs/.env
