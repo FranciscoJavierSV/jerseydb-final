@@ -4,6 +4,14 @@ const crypto = require("crypto");
 const express = require("express");
 const mysql = require("mysql2/promise");
 require("dotenv").config();
+const cors = require("cors");
+
+// Permitir llamadas desde tu frontend en GitHub Pages
+app.use(cors({
+  origin: "https://franciscojaviersv.github.io",
+  credentials: true
+}));
+
 
 const app = express();
 const port = Number(process.env.PORT || 3000);
