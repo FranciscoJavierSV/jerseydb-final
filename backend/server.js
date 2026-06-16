@@ -125,10 +125,14 @@ function requireAdmin(req, res, next) {
 
 function requireCustomer(req, res, next) {
   const cookies = parseCookies(req);
-  const idCliente = getCustomerIdFromToken(cookies.customer_token);
+  const headerToken = req.headers["x-customer-token"];
+  const token = cookies.customer_token || headerToken;
+
+  const idCliente = getCustomerIdFromToken(token);
   if (!idCliente) {
     return res.status(401).json({ error: "Sesion de cliente requerida." });
   }
+
   req.customerId = idCliente;
   next();
 }
