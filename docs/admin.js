@@ -2,22 +2,17 @@ const state = {
   data: null,
 };
 
+const API_BASE = (window.FRONTEND_API_URL || "").replace(/\/$/, "");
+
 async function request(url, options = {}) {
   const headers = { "Content-Type": "application/json", ...(options.headers || {}) };
   const adminToken = localStorage.getItem("jerseydb_admin_token");
-  if (adminToken) {
-    headers["x-admin-token"] = adminToken;
-  }
+  if (adminToken) headers["x-admin-token"] = adminToken;
 
-  const response = await fetch(url, {
-    headers,
-    credentials: "same-origin",
-    ...options,
-  });
+  const finalUrl = /^https?:\/\//i.test(url) ? url : (API_BASE ? `${API_BASE}${url}` : url);
+  const response = await fetch(finalUrl, { headers, credentials: "same-origin", ...options });
   const payload = await response.json();
-  if (!response.ok) {
-    throw new Error(payload.error || "No se pudo completar la solicitud.");
-  }
+  if (!response.ok) throw new Error(payload.error || "No se pudo completar la solicitud.");
   return payload;
 }
 
