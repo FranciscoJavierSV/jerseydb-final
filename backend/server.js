@@ -123,7 +123,7 @@ function requireAdmin(req, res, next) {
   next();
 }
 
-function requireCustomer(req, res, next) {
+async function requireCustomer(req, res, next) {
   const cookies = parseCookies(req);
   const headerToken = req.headers["x-customer-token"];
   const token = cookies.customer_token || headerToken;
@@ -133,9 +133,17 @@ function requireCustomer(req, res, next) {
     return res.status(401).json({ error: "Sesion de cliente requerida." });
   }
 
-  req.customerId = idCliente;
+  // Buscar cliente en la base de datos
+  const [rows] = await pool.query("SELECT id_cliente, nombre, correo FROM Cliente WHERE id_cliente = ?", [idCliente]);
+  if (!rows.length) {
+    return res.status(401).json({ error: "Cliente no encontrado." });
+  }
+  req.customer = rows[0];
+  // Expose numeric/customer id for handlers that expect `req.customerId`
+  req.customerId = rows[0].id_cliente;
   next();
 }
+
 
 async function initDatabase() {
   const adminConnection = await mysql.createConnection({
@@ -544,14 +552,18 @@ app.get("/admin", (_req, res) => {
   res.sendFile(path.join(__dirname, "public", "admin.html"));
 });
 
-app.get("/api/public/bootstrap", async (_req, res) => {
+app.get("/api/public/bootstrap", async (req, res) => {
   try {
-    const cookies = parseCookies(_req);
-    const customerId = getCustomerIdFromToken(cookies.customer_token);
+    const cookies = parseCookies(req);
+    const headerToken = req.headers["x-customer-token"];
+    const token = cookies.customer_token || headerToken;
+    const customerId = getCustomerIdFromToken(token);
+
     const [catalog, customer] = await Promise.all([
       fetchCatalog(),
       customerId ? fetchCustomerAccount(customerId) : Promise.resolve(null),
     ]);
+
     res.json({
       catalog,
       customer: customer
